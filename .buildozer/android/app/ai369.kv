@@ -1,0 +1,373 @@
+#:import Factory kivy.factory.Factory
+
+RootWidget:
+
+<RootWidget>:
+    screen_manager:screen_manager
+    ScreenManager:
+        id: screen_manager
+        current: 'Start'
+        pos: root.pos
+        size: root.size
+        StartScreen:
+            screen_manager: root
+            size: root.size
+            pos: root.pos
+        PlayMenuScreen:
+            screen_manager: root
+            size: root.size
+            pos: root.pos
+        PlayScreen:
+            screen_manager: root
+            size: root.size
+            pos: root.pos
+            BoxLayout:
+                orientation: 'vertical'
+                Upper_bar:
+                    size_hint: (1, 0.1)
+                    canvas.before:
+                        Color:
+                            rgba: 0, 0, 1, 1
+
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    BoxLayout:
+                        #Label:
+                        #    text: "now:" + root.now0
+                        #Label:
+                        #    text: "dt:" + root.deltat
+                        #Label:
+                        #    text: "turn:" + root.Turn
+                        Label:
+                            size_hint_y: None
+                            text: '남은 시간 : {}초'.format(root.delta[:3])
+                            height: '48dp'
+                    Button:
+                        text: root.startbtn
+                        on_press: root.startpress()
+
+                BoxLayout:
+                    canvas.before:
+                        Color:
+                            rgba: 1, 1, 1, 1
+
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    Label:
+                        text: root.TSN
+                        color: 0, 0, 0, 1
+                        font_size: 30
+
+                Lower_bar:
+                    size_hint: (1, 0.1)
+                    canvas.before:
+                        Color:
+                            rgba: 0, 0, 1, 1
+
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+                    Button:
+                        size_hint: (0.3, 1)
+                        text: root.n0
+                        on_press: root.tsn_include(0)
+
+                    Button:
+                        size_hint: (0.3, 1)
+                        text: 'X'
+                        on_press: root.tsn_include(1)
+
+                    Button:
+                        size_hint: (0.3, 1)
+                        text: 'XX'
+                        on_press: root.tsn_include(2)
+
+                    Button:
+                        size_hint: (0.3, 1)
+                        text: 'XXX'
+                        on_press: root.tsn_include(3)
+
+                    Button:
+                        size_hint: (0.3, 1)
+                        text: 'XXXX'
+                        on_press: root.tsn_include(4)
+
+        BenchScreen:
+            screen_manager: root
+            size: root.size
+            pos: root.pos
+
+            BoxLayout:
+                orientation: 'vertical'
+                Upper_bar:
+                    size_hint: (1, 0.1)
+                    canvas.before:
+                        Color:
+                            rgba: 0, 0, 0, 1
+
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+                    Button:
+                        text: '벤치마크 시작'
+                        on_press:
+                            root.thread2()
+                    Button:
+                        text: '일시정지'
+                        on_press:
+                            root.threadpause()
+
+                BoxLayout:
+                    canvas.before:
+                        Color:
+                            rgba: 0, 0, 0, 1
+
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    Label:
+                        text: root.str1 + root.str2 + root.str3
+                        color: 1, 1, 1, 1
+
+                Lower_bar:
+                    size_hint: (1, 0.1)
+                    canvas.before:
+                        Color:
+                            rgba: 0, 0, 0, 1
+
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    BoxLayout:
+                        BoxLayout:
+                        Button:
+                            text: '메인 화면으로'
+                            on_press:
+                            	root.threadpause()
+                                root.set_state('Start')
+        LoseScreen:
+            screen_manager: root
+            size: root.size
+            pos: root.pos
+            BoxLayout:
+                orientation: 'vertical'
+                BoxLayout:
+                    size_hint: (1, 0.1)
+                BoxLayout:
+                    Label:
+                        text: root.Reason+'당신은 졌습니다...\n다시 해보시겠습니까?'
+                        font_size: 30
+                BoxLayout:
+                    size_hint: (1, 0.2)
+                    BoxLayout:
+                    Button:
+                        text: '좋아!'
+                        on_press:
+                            root.set_state('Playmenu')
+                    BoxLayout:
+                    Button:
+                        text: '딱히...'
+                        on_press:
+                            root.set_state('Start')
+                    BoxLayout:
+        WinScreen:
+            screen_manager: root
+            size: root.size
+            pos: root.pos
+
+<StartScreen>:
+    screen_manager: self.screen_manager
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint: (1, 0.5)
+            BoxLayout:
+            Button:
+                text: '제작 정보'
+                on_press: Factory.AboutPop().open()
+            Button:
+                text: '앱 정보'
+                on_press: Factory.HelpPop().open()
+        BoxLayout:
+        BoxLayout:
+            BoxLayout:
+            Button:
+                text: '369 시작!'
+                on_press:
+                    root.screen_manager.initialize()
+                    root.screen_manager.set_state('Playmenu')
+            Button:
+                text: 'AI 성능 테스트'
+                on_press:
+                    root.screen_manager.initialize()
+                    root.screen_manager.set_state('Bench')
+            BoxLayout:
+        BoxLayout:
+        BoxLayout:
+            size_hint: (1, 0.5)
+            BoxLayout:
+            Button:
+                text: '종료'
+                on_press: root.screen_manager.finish()
+
+<PlayMenuScreen>:
+    screen_manager: self.screen_manager
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+        BoxLayout:
+            BoxLayout:
+            Button:
+                text: '쉬움'
+                on_press:
+                    root.screen_manager.initialize()
+                    root.screen_manager.difficulty = 1
+                    root.screen_manager.set_state('Play')
+            BoxLayout:
+        BoxLayout:
+            BoxLayout:
+            Button:
+                text: '보통'
+                on_press:
+                    root.screen_manager.initialize()
+                    root.screen_manager.difficulty = 2
+                    root.screen_manager.set_state('Play')
+            BoxLayout:
+        BoxLayout:
+            BoxLayout:
+            Button:
+                text: '어려움'
+                on_press:
+                    root.screen_manager.initialize()
+                    root.screen_manager.difficulty = 3
+                    root.screen_manager.set_state('Play')
+            BoxLayout:
+        BoxLayout:
+            BoxLayout:
+            Button:
+                text: '돌아가기'
+                on_press:
+                    root.screen_manager.difficulty = 0
+                    root.screen_manager.set_state('Start')
+            BoxLayout:
+        BoxLayout:
+
+<PlayScreen>:
+    screen_manager: self.screen_manager
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 1
+
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<BenchScreen>:
+    screen_manager: self.screen_manager
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 1
+
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<LoseScreen>:
+    screen_manager: self.screen_manager
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 1
+
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<WinScreen>:
+    screen_manager: self.screen_manager
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint: (1, 0.1)
+        BoxLayout:
+            Label:
+                text: '당신이 이겼습니다!!!\n다시 해보시겠습니까?'
+                color: 0, 0, 0, 1
+                font_size: 30
+        BoxLayout:
+            size_hint: (1, 0.2)
+            BoxLayout:
+            Button:
+                text: '좋아!'
+                on_press:
+                    root.screen_manager.set_state('Playmenu')
+            BoxLayout:
+            Button:
+                text: '딱히...'
+                on_press:
+                    root.screen_manager.set_state('Start')
+            BoxLayout:
+
+<HelpPop@Popup>:
+    size_hint: 0.5, 0.5
+    title: '앱 정보'
+    auto_dismiss: False
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text:
+                '''이 앱은 369 게임을 학습한 AI들의 성능을 확인하고
+                직접 AI들과 369 게임을 해볼 수 있도록 만들어졌습니다.\n
+                369 시작을 눌러 369 게임을 AI 성능 테스트를 눌러
+                게임에 사용된 3가지 AI의 성능을 확인해 볼 수 있습니다.'''
+
+        Button:
+            text: '닫기'
+            on_press: root.dismiss()
+            size_hint_y: None
+            height: '40dp'
+
+<AboutPop@Popup>:
+    size_hint: 0.5, 0.5
+    title: '제작 정보'
+    auto_dismiss: False
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text:
+                '''만든 사람: 엄세환
+                버전: 0.1
+                감사합니다.'''
+
+        Button:
+            text: '닫기'
+            on_press: root.dismiss()
+            size_hint_y: None
+            height: '40dp'

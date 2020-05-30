@@ -1,0 +1,35 @@
+RootWidget:
+
+<RootWidget>:
+    screen_manager: screen_manager
+    ScreenManager:
+        id: screen_manager
+        current: 'main_menu'
+        pos: root.pos
+        size: root.size
+        MainMenu:
+            screen_manager: root
+            size: root.size
+            pos: root.pos
+        OtherMenu:
+            screen_manager: root
+            size: root.size
+            pos: root.pos
+
+<MainMenu>:
+    screen_manager: self.screen_manager
+    FloatLayout:
+        Button:
+            text: 'Start'
+            size_hint: (.4, .2)
+            pos_hint: {'x': .3, 'y': .4}
+            on_press: root.screen_manager.set_state(root.name)
+
+<OtherMenu>:
+    screen_manager: self.screen_manager
+    FloatLayout:
+        Button:
+            text: 'Other'
+            size_hint: (.4, .2)
+            pos_hint: {'x': .3, 'y': .4}
+            on_press: root.screen_manager.set_state(root.name)
